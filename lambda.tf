@@ -10,7 +10,7 @@ resource "aws_lambda_permission" "lambda_permission" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.example.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn = "${aws_apigatewayv2_api.example.execution_arn}/*/*/example"
+  source_arn    = "${aws_apigatewayv2_api.example.execution_arn}/*/*/example"
 }
 
 resource "aws_iam_role" "iam_for_example" {

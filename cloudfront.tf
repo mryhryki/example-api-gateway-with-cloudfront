@@ -26,10 +26,23 @@ resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
 resource "aws_cloudfront_distribution" "cdn" {
   origin {
     domain_name = aws_s3_bucket.contents.bucket_regional_domain_name
-    origin_id   = local.project_name
+    origin_id   = "${local.project_name}-s3"
 
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path
+    }
+  }
+
+  origin {
+    domain_name = "${aws_apigatewayv2_integration.example.api_id}.execute-api.us-east-1.amazonaws.com"
+    origin_id   = "${local.project_name}-apigateway"
+    origin_path = "/dev"
+
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
     }
   }
 
@@ -41,7 +54,7 @@ resource "aws_cloudfront_distribution" "cdn" {
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD", "OPTIONS"]
-    target_origin_id = local.project_name
+    target_origin_id = "${local.project_name}-s3"
 
     forwarded_values {
       query_string = false
@@ -56,6 +69,21 @@ resource "aws_cloudfront_distribution" "cdn" {
     max_ttl                = 86400
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
+  }
+
+  ordered_cache_behavior {
+    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = ["GET", "HEAD"]
+    path_pattern           = "/example"
+    target_origin_id       = "${local.project_name}-apigateway"
+    viewer_protocol_policy = "redirect-to-https"
+
+    forwarded_values {
+      query_string = false
+      cookies {
+        forward = "all"
+      }
+    }
   }
 
   custom_error_response {
@@ -79,5 +107,5 @@ resource "aws_cloudfront_distribution" "cdn" {
 }
 
 output "cloudfront_url" {
-  value = "https://${aws_cloudfront_distribution.cdn.domain_name}/"
+  value = "https://${aws_cloudfront_distribution.cdn.domain_name}/example"
 }
