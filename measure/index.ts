@@ -1,4 +1,4 @@
-const COUNT = 1
+const COUNT = 100
 
 const getNowUnixTimeMs = (): number => (new Date()).getTime()
 const getAverage = (results: number[]): number =>
@@ -20,7 +20,8 @@ const measure = async (url: string, count: number): Promise<number[]> => {
   return results;
 }
 
-const apiGatewayResults = await measure("https://r3hh44vkbc.execute-api.us-east-1.amazonaws.com/dev/example", COUNT)
-const cloudFrontResults = await measure("https://d3kxy2u36xjgwi.cloudfront.net/example", COUNT)
+const {api_gateway_url, cloudfront_url} = JSON.parse(await Deno.readTextFile('./terraform.tfstate')).outputs
+const apiGatewayResults = await measure(api_gateway_url.value, COUNT)
+const cloudFrontResults = await measure(cloudfront_url.value, COUNT)
 console.log("API Gateway average response time:", getAverage(apiGatewayResults), "ms")
 console.log("CloudFront average response time:", getAverage(cloudFrontResults), "ms")
