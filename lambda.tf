@@ -2,11 +2,12 @@ resource "aws_lambda_function" "example" {
   function_name = "${local.project_name}-example"
   handler = "index.handler"
   role = aws_iam_role.iam_for_example.arn
-  runtime = ""
+  runtime = "nodejs14.x"
+  filename      = "lambda/lambda.zip"
 }
 
 resource "aws_iam_role" "iam_for_example" {
-  name = "iam_for_lambda"
+  name = "${local.project_name}-lambda-role"
 
   assume_role_policy = <<EOF
 {
