@@ -13,9 +13,9 @@ const measure = async (url: string, count: number): Promise<number[]> => {
     const start = getNowUnixTimeMs()
     const res = await fetch(url)
     const timeMs = getNowUnixTimeMs() - start
-    const {random} = await res.json()
+    const {lambda, random} = await res.json()
     results.push(timeMs)
-    console.log("%s Res: %d (%s ms) [Random: %s]", `00${c}`.substr(-3, 3), res.status, timeMs, random)
+    console.log("%s Res: %d (%s ms) [Lambda: %s, Random: %s]", `00${c}`.substr(-3, 3), res.status, timeMs, lambda, random)
   }
   console.log("")
   return results;
