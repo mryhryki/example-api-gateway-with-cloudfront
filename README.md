@@ -22,3 +22,9 @@ $ terraform apply
 $ terraform destroy
 # CloudFront 周りでエラーが出たので、AWS Console で消したほうが良いかも
 ```
+
+## 計測 (Deno)
+
+```bash
+$ deno run --allow-net --allow-read ./measure/index.ts
+```
