@@ -84,6 +84,10 @@ resource "aws_cloudfront_distribution" "cdn" {
         forward = "all"
       }
     }
+
+    min_ttl                = 0
+    default_ttl            = 0
+    max_ttl                = 0
   }
 
   custom_error_response {
