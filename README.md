@@ -15,3 +15,10 @@ $ terraform init
 $ terraform plan
 $ terraform apply
 ```
+
+### Destroy
+
+```bash
+$ terraform destroy
+# CloudFront 周りでエラーが出たので、AWS Console で消したほうが良いかも
+```
