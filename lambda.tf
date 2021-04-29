@@ -1,9 +1,16 @@
 resource "aws_lambda_function" "example" {
   function_name = "${local.project_name}-example"
-  handler = "index.handler"
-  role = aws_iam_role.iam_for_example.arn
-  runtime = "nodejs14.x"
+  handler       = "index.handler"
+  role          = aws_iam_role.iam_for_example.arn
+  runtime       = "nodejs14.x"
   filename      = "lambda/lambda.zip"
+}
+
+resource "aws_lambda_permission" "lambda_permission" {
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.example.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn = "${aws_apigatewayv2_api.example.execution_arn}/*/*/example"
 }
 
 resource "aws_iam_role" "iam_for_example" {
