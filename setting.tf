@@ -1,7 +1,7 @@
 locals {
   aws_account_id = data.aws_caller_identity.current.account_id
-  aws_region     = "us-east-1"
-  bucket_name    = "33399738-4324-4e98-bf4a-20f99df00ea4"
+  aws_region     = "ap-northeast-1"
+  bucket_name    = "e85ecd55-4419-4ea5-8a5f-dfef7a8b9241"
   project_name   = "example-api-gateway-with-cloudfront"
 }
 
