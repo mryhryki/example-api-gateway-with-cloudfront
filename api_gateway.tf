@@ -25,5 +25,5 @@ resource "aws_apigatewayv2_integration" "example" {
 }
 
 output "api_gateway_url" {
-  value = "https://${aws_apigatewayv2_integration.example.api_id}.execute-api.us-east-1.amazonaws.com/${aws_apigatewayv2_stage.example.name}/example"
+  value = "https://${aws_apigatewayv2_integration.example.api_id}.execute-api.${local.aws_region}.amazonaws.com/${aws_apigatewayv2_stage.example.name}/example"
 }

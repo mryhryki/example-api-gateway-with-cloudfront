@@ -34,7 +34,7 @@ resource "aws_cloudfront_distribution" "cdn" {
   }
 
   origin {
-    domain_name = "${aws_apigatewayv2_integration.example.api_id}.execute-api.us-east-1.amazonaws.com"
+    domain_name = "${aws_apigatewayv2_integration.example.api_id}.execute-api.${local.aws_region}.amazonaws.com"
     origin_id   = "${local.project_name}-apigateway"
     origin_path = "/dev"
 
